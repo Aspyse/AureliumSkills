@@ -103,6 +103,9 @@ public class DamageListener implements Listener {
             //Critical
             if (OptionL.criticalEnabled(damageType)) {
                 critical.applyCrit(event, player, playerData);
+                if (damageType == DamageType.BOW) {
+                    player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 1, 1.5f);
+                }
             }
 
             // Charged shot
