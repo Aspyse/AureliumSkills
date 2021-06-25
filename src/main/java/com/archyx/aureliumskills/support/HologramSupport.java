@@ -46,10 +46,10 @@ public class HologramSupport implements Listener {
                             Player player = (Player) event.getDamager();
                             if (player.hasMetadata("skillsCritical")) {
                                 //If only critical
-                                createHologram(getLocation(event.getEntity()), getText(event.getFinalDamage(), true));
+                                createHologram(getLocation(event.getEntity(), player), getText(event.getFinalDamage(), true));
                             } else {
                                 //If none
-                                createHologram(getLocation(event.getEntity()), getText(event.getFinalDamage(), false));
+                                createHologram(getLocation(event.getEntity(), player), getText(event.getFinalDamage(), false));
 
                             }
                         } else if (event.getDamager() instanceof Arrow) {
@@ -69,8 +69,12 @@ public class HologramSupport implements Listener {
         }
     }
 
-    private Location getLocation(Entity entity) {
+    private Location getLocation(Entity entity, Player player) {
         Location location = entity.getLocation();
+        Location playerLocation = player.getLocation();
+        double maxDistance = 5.0;
+        double distance = playerLocation.distance(location);
+        double factor = Math.min(1, maxDistance/distance);
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
             //Calculate random holograms
             double xMin = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_X_MIN);
@@ -86,9 +90,12 @@ public class HologramSupport implements Listener {
         }
         else {
             double x = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_X);
+            x += (location.getX() - playerLocation.getX()) * factor;
             double y = (entity.getHeight() - entity.getHeight() * 0.1) + OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
+            y += (location.getY() - playerLocation.getY()) * factor;
             double z = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Z);
-            location.add(x, y, z);
+            z += (location.getZ() - playerLocation.getZ()) * factor;
+            playerLocation.add(x, y, z);
         }
         return location;
     }
@@ -114,39 +121,10 @@ public class HologramSupport implements Listener {
             }
         }
         if (critical) {
-            text.append(getCriticalText(damageText));
+            text.append(ChatColor.RED).append("crit!\n" + damageText);
         }
         else {
             text.append(damageText);
-        }
-        return text.toString();
-    }
-
-    private String getCriticalText(String damageText) {
-        StringBuilder text = new StringBuilder(ChatColor.GRAY + "");
-        for (int i = 0; i < damageText.length(); i++) {
-            int j = Math.abs(i - (damageText.length() - 1));
-            if (j == 0) {
-                text.append(ChatColor.GRAY).append(damageText.charAt(i));
-            } else if (j == 1) {
-                text.append(ChatColor.WHITE).append(damageText.charAt(i));
-            } else if (j == 2) {
-                text.append(ChatColor.YELLOW).append(damageText.charAt(i));
-            } else if (j == 3) {
-                text.append(ChatColor.GOLD).append(damageText.charAt(i));
-            } else if (j == 4) {
-                text.append(ChatColor.RED).append(damageText.charAt(i));
-            } else if (j == 5) {
-                text.append(ChatColor.DARK_RED).append(damageText.charAt(i));
-            } else if (j == 6) {
-                text.append(ChatColor.DARK_PURPLE).append(damageText.charAt(i));
-            } else if (j == 7) {
-                text.append(ChatColor.LIGHT_PURPLE).append(damageText.charAt(i));
-            } else if (j == 8) {
-                text.append(ChatColor.BLUE).append(damageText.charAt(i));
-            } else {
-                text.append(ChatColor.DARK_BLUE).append(damageText.charAt(i));
-            }
         }
         return text.toString();
     }
