@@ -25,7 +25,7 @@ public class Critical {
         if (plugin.getAbilityManager().isEnabled(Ability.CRIT_CHANCE)) {
             if (isCrit(playerData)) {
                 event.setDamage(event.getDamage() * getCritMultiplier(playerData));
-                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.5f, 2);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 1, 1.5f);
                 player.setMetadata("skillsCritical", new FixedMetadataValue(plugin, true));
                 new BukkitRunnable() {
                     @Override
