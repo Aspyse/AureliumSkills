@@ -73,7 +73,7 @@ public class HologramSupport implements Listener {
     private Location getLocation(Entity entity, Player player) {
         Location location = entity.getLocation();
         Location playerLocation = player.getLocation();
-        double maxDistance = 5.0;
+        double maxDistance = 3.5;
         double distance = playerLocation.distance(location);
         double factor = Math.min(1.0, maxDistance / distance);
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
@@ -136,9 +136,9 @@ public class HologramSupport implements Listener {
         int maxTicks = 18;
         double bounceHeight = 0.8;
         double travel = 0.8;
-        double velX = (2*Math.random() - 1) * travel/maxTicks;
+        double velX = (2*Math.random() - 1);
         double velY = 1 / maxTicks;
-        double velZ = (2*Math.random() - 1) * travel/maxTicks;
+        double velZ = (2*Math.random() - 1);
 
         new BukkitRunnable() {
             int ticks;
@@ -146,7 +146,7 @@ public class HologramSupport implements Listener {
             @Override
             public void run() {
                 ticks++;
-                hologram.teleport(location.add(velX, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ));
+                hologram.teleport(location.add(velX, -4*(2*ticks-maxTicks)/Math.pow(maxTicks, 2), velZ));
 
                 if (ticks > maxTicks) {
                     hologram.delete();
