@@ -46,7 +46,7 @@ public class HologramSupport implements Listener {
                             Player player = (Player) event.getDamager();
                             if (player.hasMetadata("skillsCritical")) {
                                 //If only critical
-                                createHologram(getLocation(event.getEntity(), player), new StringBuilder(ChatColor.RED + "crit!"));
+                                createHologram(getLocation(event.getEntity(), player), new StringBuilder(ChatColor.RED + "crit!").toString());
                                 createHologram(getLocation(event.getEntity(), player), getText(event.getFinalDamage(), true));
                             } else {
                                 //If none
