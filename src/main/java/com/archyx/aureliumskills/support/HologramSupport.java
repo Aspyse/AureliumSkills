@@ -136,9 +136,9 @@ public class HologramSupport implements Listener {
         int maxTicks = 18;
         double bounceHeight = 0.8;
         double travel = 0.8;
-        double velX = (2*Math.random() - 1);
+        double velX = (2*Math.random() - 1) * travel/maxTicks;
         double velY = 1 / maxTicks;
-        double velZ = (2*Math.random() - 1);
+        double velZ = (2*Math.random() - 1) * travel/maxTicks;
 
         new BukkitRunnable() {
             int ticks;
