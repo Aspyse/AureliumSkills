@@ -93,7 +93,7 @@ public class HologramSupport implements Listener {
             x += (location.getX() - playerLocation.getX()) * factor;
             double y = (entity.getHeight() - entity.getHeight() * 0.1);
             y += (location.getY() - playerLocation.getY()) * factor;
-            y += OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y)
+            y += OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
             double z = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Z);
             z += (location.getZ() - playerLocation.getZ()) * factor;
             playerLocation.add(x, y, z);
