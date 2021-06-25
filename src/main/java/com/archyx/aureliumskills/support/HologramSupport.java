@@ -91,8 +91,9 @@ public class HologramSupport implements Listener {
         else {
             double x = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_X);
             x += (location.getX() - playerLocation.getX()) * factor;
-            double y = (entity.getHeight() - entity.getHeight() * 0.1) + OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
+            double y = (entity.getHeight() - entity.getHeight() * 0.1);
             y += (location.getY() - playerLocation.getY()) * factor;
+            y += OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y)
             double z = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Z);
             z += (location.getZ() - playerLocation.getZ()) * factor;
             playerLocation.add(x, y, z);
@@ -121,7 +122,7 @@ public class HologramSupport implements Listener {
             }
         }
         if (critical) {
-            text.append(ChatColor.RED).append("crit!\n").arrkjc(damageText);
+            text.append(ChatColor.RED).append("crit!\n").append(damageText);
         }
         else {
             text.append(damageText);
