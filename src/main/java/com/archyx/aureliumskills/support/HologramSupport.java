@@ -74,7 +74,7 @@ public class HologramSupport implements Listener {
         Location playerLocation = player.getLocation();
         double maxDistance = 1.0;
         double distance = playerLocation.distance(location);
-        double factor = Math.min(1, maxDistance / distance);
+        double factor = Math.min(1.0, maxDistance / distance);
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
             //Calculate random holograms
             double xMin = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_X_MIN);
@@ -98,7 +98,7 @@ public class HologramSupport implements Listener {
             z += (location.getZ() - playerLocation.getZ()) * factor;
             playerLocation.add(x, y, z);
         }
-        return location;
+        return playerLocation;
     }
 
     private String getText(double damage, boolean critical) {
@@ -122,7 +122,7 @@ public class HologramSupport implements Listener {
             }
         }
         if (critical) {
-            text.append(ChatColor.RED).append("crit!\n").append(damageText);
+            text.append(ChatColor.RED).append(damageText + "!");
         }
         else {
             text.append(damageText);
