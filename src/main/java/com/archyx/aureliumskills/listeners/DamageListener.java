@@ -15,6 +15,7 @@ import com.archyx.aureliumskills.stats.Toughness;
 import com.archyx.aureliumskills.util.mechanics.DamageType;
 import com.cryptomorin.xseries.XMaterial;
 import org.bukkit.Material;
+import org.bukkit.Sound;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -102,6 +103,7 @@ public class DamageListener implements Listener {
             //Critical
             if (OptionL.criticalEnabled(damageType)) {
                 critical.applyCrit(event, player, playerData);
+                player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_ATTACK_CRIT, 0.5f, 2);
             }
 
             // Charged shot

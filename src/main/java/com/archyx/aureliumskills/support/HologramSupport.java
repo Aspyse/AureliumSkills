@@ -46,6 +46,7 @@ public class HologramSupport implements Listener {
                             Player player = (Player) event.getDamager();
                             if (player.hasMetadata("skillsCritical")) {
                                 //If only critical
+                                createHologram(getLocation(event.getEntity(), player), new StringBuilder(ChatColor.RED + "crit!"));
                                 createHologram(getLocation(event.getEntity(), player), getText(event.getFinalDamage(), true));
                             } else {
                                 //If none
@@ -72,7 +73,7 @@ public class HologramSupport implements Listener {
     private Location getLocation(Entity entity, Player player) {
         Location location = entity.getLocation();
         Location playerLocation = player.getLocation();
-        double maxDistance = 1.0;
+        double maxDistance = 5.0;
         double distance = playerLocation.distance(location);
         double factor = Math.min(1.0, maxDistance / distance);
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
@@ -91,9 +92,8 @@ public class HologramSupport implements Listener {
         else {
             double x = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_X);
             x += (location.getX() - playerLocation.getX()) * factor;
-            double y = (entity.getHeight() - entity.getHeight() * 0.1);
+            double y = (entity.getHeight() - entity.getHeight() * 0.1) + OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
             y += (location.getY() - playerLocation.getY()) * factor;
-            y += OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
             double z = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Z);
             z += (location.getZ() - playerLocation.getZ()) * factor;
             playerLocation.add(x, y, z);
@@ -122,7 +122,7 @@ public class HologramSupport implements Listener {
             }
         }
         if (critical) {
-            text.append(ChatColor.RED).append(damageText + "!");
+            text.append(ChatColor.RED).append(damageText);
         }
         else {
             text.append(damageText);
@@ -133,11 +133,26 @@ public class HologramSupport implements Listener {
     private void createHologram(Location location, String text) {
         Hologram hologram = HologramsAPI.createHologram(plugin, location);
         hologram.appendTextLine(text);
+        int maxTicks = 18;
+        double bounceHeight = 0.8;
+        double travel = 0.8;
+        double velX = (2*Math.random() - 1) * travel/maxTicks;
+        double velY = 1 / maxTicks;
+        double velZ = (2*Math.random() - 1) * travel/maxTicks;
+
         new BukkitRunnable() {
+            int ticks;
+
             @Override
             public void run() {
-                hologram.delete();
+                ticks++;
+                hologram.teleport(location.add(velX, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ));
+
+                if (ticks > maxTicks) {
+                    hologram.delete();
+                    cancel();
+                }
             }
-        }.runTaskLater(plugin, 30L);
+        }.runTaskTimer(plugin, 1L, 1L);
     }
 }
