@@ -86,12 +86,12 @@ public class HologramSupport implements Listener {
             double zMin = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_Z_MIN);
             double zMax = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_Z_MAX);
             double z = zMin + (zMax - zMin) * r.nextDouble();
-            location.add(x, (target.getHeight() - target.getHeight() * 0.1) + y, z);
+            location.add(x, y, z);
         }
         else {
             double x = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_X);
             x += (location.getX() - playerLocation.getX()) * factor;
-            double y = (target.getHeight() - target.getHeight() * 0.1) + OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
+            double y = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Y);
             y += (location.getY() - playerLocation.getY()) * factor;
             double z = OptionL.getDouble(Option.DAMAGE_HOLOGRAMS_OFFSET_Z);
             z += (location.getZ() - playerLocation.getZ()) * factor;
@@ -131,6 +131,7 @@ public class HologramSupport implements Listener {
 
     private void createHologram(String text, Entity target, Player player) {
         Location location = target.getLocation();
+        location.add(0.0, target.getHeight() - target.getHeight() * 0.1, 0.0);
         Location playerLocation = player.getLocation();
         double distance = playerLocation.distance(location);
 
