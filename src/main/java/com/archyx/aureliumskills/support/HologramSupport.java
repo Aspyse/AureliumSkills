@@ -147,18 +147,20 @@ public class HologramSupport implements Listener {
 
         new BukkitRunnable() {
             int ticks;
+            Location playerLocation;
+            Location hologramLocation;
 
             @Override
-            public void run() {
-                ticks++;
-                Location playerLocation = player.getLocation();
-                Location hologramLocation = getLocation(location, playerLocation, distance);
+            public void run() { 
+                playerLocation = player.getLocation();
+                hologramLocation = getLocation(location, playerLocation, distance);
                 hologram.teleport(hologramLocation.add(velX*ticks, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ*ticks));
 
                 if (ticks > maxTicks) {
                     hologram.delete();
                     cancel();
                 }
+                ticks++;
             }
         }.runTaskTimer(plugin, 1L, 1L);
     }
