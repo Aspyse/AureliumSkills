@@ -71,7 +71,7 @@ public class HologramSupport implements Listener {
         }
     }
 
-    private Location getLocation(Location target, Location player, double distance) {
+    private Location getLocation(Location location, Location playerLocation, double distance) {
         double maxDistance = 3.5;
         double factor = Math.min(1.0, maxDistance / distance);
 
