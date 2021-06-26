@@ -151,9 +151,9 @@ public class HologramSupport implements Listener {
             @Override
             public void run() {
                 ticks++;
-                playerLocation = player.getLocation();
-                location = getLocation(location, playerLocation, distance);
-                hologram.teleport(location.add(velX*ticks, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ*ticks));
+                Location playerLocation = player.getLocation();
+                Location hologramLocation = getLocation(location, playerLocation, distance);
+                hologram.teleport(hologramLocation.add(velX*ticks, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ*ticks));
 
                 if (ticks > maxTicks) {
                     hologram.delete();
