@@ -71,8 +71,8 @@ public class HologramSupport implements Listener {
         }
     }
 
-    private Location getLocation(Location location, Location playerLocation, double distance) {
-        double maxDistance = 3.5;
+    private Location getLocation(Location location, Location playerLocation, double maxDistance) {
+        double maxDistance = 2.5;
         double factor = Math.min(1.0, maxDistance / distance);
 
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
