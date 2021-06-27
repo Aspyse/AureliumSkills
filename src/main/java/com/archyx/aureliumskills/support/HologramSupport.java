@@ -71,9 +71,10 @@ public class HologramSupport implements Listener {
         }
     }
 
-    private Location getLocation(Location location, Location playerLocation, double maxDistance) {
-        double maxDistance = 2.5;
-        double factor = Math.min(1.0, maxDistance / distance);
+    private Location getLocation(Location location, Location playerLocation) {
+        double distance = playerLocation.distance(location);
+        double fixedDistance = 2.5;
+        double factor = fixedDistance / distance;
 
         if (OptionL.getBoolean(Option.DAMAGE_HOLOGRAMS_OFFSET_RANDOM_ENABLED)) {
             //Calculate random holograms
@@ -133,7 +134,6 @@ public class HologramSupport implements Listener {
         Location location = target.getLocation();
         location.add(0.0, target.getHeight() - target.getHeight() * 0.1, 0.0);
         Location playerLocation = player.getLocation();
-        double distance = playerLocation.distance(location);
 
         int maxTicks = 18;
         double bounceHeight = 0.8;
@@ -142,7 +142,7 @@ public class HologramSupport implements Listener {
         double velY = 1 / maxTicks;
         double velZ = (2*Math.random() - 1) * travel/maxTicks;
 
-        Hologram hologram = HologramsAPI.createHologram(plugin, getLocation(location, playerLocation, distance));
+        Hologram hologram = HologramsAPI.createHologram(plugin, getLocation(location, playerLocation));
         hologram.appendTextLine(text);
 
         new BukkitRunnable() {
@@ -153,8 +153,8 @@ public class HologramSupport implements Listener {
             @Override
             public void run() { 
                 playerLocation = player.getLocation();
-                hologramLocation = getLocation(location, playerLocation, distance);
-                hologram.teleport(hologramLocation.add(velX*ticks, (1-velY*ticks) * (4*bounceHeight*ticks/maxTicks), velZ*ticks));
+                hologramLocation = getLocation(location, playerLocation);
+                hologram.teleport(hologramLocation.add(velX*ticks, (1-(velY*ticks)) * ((4*bounceHeight*ticks)/maxTicks), velZ*ticks));
 
                 if (ticks > maxTicks) {
                     hologram.delete();
